@@ -1,0 +1,344 @@
+body, * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(to bottom, #090a47, #1b1ec9, #3638a7, #E0A31B);
+    overflow-y: hidden;
+}
+
+#counter {
+    display: inline-block;
+    background-color: #daa42f;
+    border-radius: 10px;
+    text-align: center;
+    font-size: fit-content;
+    font-weight: 600;
+    color: white;
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    margin-top: 10px;
+    margin-right: 25px;
+    right: 0;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 30px;
+    padding: 5px;
+    margin: 20px;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+}
+.header #logoIM50 {
+    border-radius: 50%;
+}
+.header #border-logo {
+    padding: 5px;
+    border-right: 1px solid rgb(255, 255, 255);
+}
+.header #border-carrinho {
+    padding: 5px;
+    border-left: 1px solid rgb(255, 255, 255);
+}
+.header #border-carrinho:hover {
+    cursor: pointer;
+}
+#border-carrinho .carrinho {
+    width: 75px;
+    height: 75px;
+    margin-top: 15px;
+}
+
+.header h1 {
+    margin: auto;
+    color: white;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    padding-top: 20px;
+    gap: 55px;
+    max-width: 1250px;
+    margin: auto;
+}
+
+.busca {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.busca input {
+    width: 500px;
+    height: 50px;
+    font-size: 18pt;
+    text-align: center;
+    border-radius: 5px;
+    border: none;
+}
+
+.rifa-number {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.rifa-price {
+    font-size: 18px;
+}
+
+.box {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: rgba(0, 0, 0, 0.774);
+    background: linear-gradient(to bottom, #E0A21B, #E0D21B);
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 20px;
+    transition: background-color 0.3s, transform 0.2s ease-in-out;
+
+}
+
+.box.selected {
+    background-color: rgb(0, 11, 160);
+    color: white;
+    transition: 0.2s;
+}
+
+
+.add-carrinho {
+    color: rgba(0, 0, 0, 0.904);
+    width: 100%;
+    border-radius: 10px;
+    border: 2px solid black;
+    padding: 5px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.add-carrinho:hover {
+    transform: scale(1.10);
+    transition: 0.2s;
+}
+
+.pagination {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.pagination .btn-pagination {
+    font-size: 18pt;
+    width: 250px;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.76);
+    color: rgba(0, 0, 0, 0.753);
+}
+.pagination .btn-pagination:hover{
+    color: rgba(255, 255, 255, 0.753);
+    background-color: rgb(59, 59, 59);
+    transition: 0.2s;
+    cursor: pointer;
+}
+.pagination span{
+    font-size: 18pt;
+    color: white;
+    font-weight: 600;
+    margin-top: auto;
+}
+
+.rifa-indisponivel {
+    align-items: center;
+    text-align: center;
+    font-size: 18pt;
+    color: #ffff;
+    margin-top: 20px;
+}
+
+.lista {
+    display: flex;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 300px;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.425);
+    z-index: 1000;
+    overflow-y: auto;
+    
+    backdrop-filter: blur(10px);
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+}
+.lista.open {
+    transform: translateX(0);
+}
+
+.lista-overlay{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+.lista-overlay.open {
+    display: block;
+}
+
+.conteudo {
+    padding: 20px;
+}
+.conteudo .header-conteudo {
+    display: flex;
+    flex-direction: row;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #DDDDDD;
+}
+
+.fechar { 
+    float: right;
+    cursor: pointer;
+    font-size: 18pt;
+    font-weight: 1000;
+    color: #474747;
+    margin-left: 35px;
+}
+.fechar:hover {
+    color: #000;
+    transition: 0.5s;
+}
+
+#rifas-selecionadas {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+#rifas-selecionadas li {
+    padding: 10px;
+    border-bottom: 1px solid #DDDDDD;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#comprar {
+    background-color: #28A745;
+    width: 100%;
+    color: white;
+}
+#comprar:hover {
+    background-color: #218838;
+}
+
+#limpar-carrinho {
+    background-color: #c42e3d;
+    width: 100%;
+    color: white;
+}
+#limpar-carrinho:hover {
+    background-color: #ac1e2c;
+}
+
+#comprar, #limpar-carrinho {
+    padding: 10px 20px;
+    font-size: 16pt;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 5px;
+    transition: background-color 0.2s;
+}
+
+.btn-remover {
+    padding: 5px 10px;
+    font-size: 14pt;
+    border: none;
+    border-radius: 5px;
+    background-color: #DC3545;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-remover:hover {
+    background-color: #C82333;
+}
+
+.total {
+    font-weight: 600;
+}
+.vazio{
+    padding-bottom: 5px;
+    border-bottom: 1px solid #DDDDDD;
+    font-weight: 600;
+}
+
+
+@media screen and (min-width: 320px) and (max-width: 425px) {
+    .container {
+        grid-template-columns: repeat(3, minmax(50px, 1fr));
+        gap: 40px;
+    }
+
+    .box {
+        height: 80px;
+        padding: 15px;
+    }
+
+    .rifa-number, .rifa-price {
+        font-size: 14px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    .container {
+        grid-template-columns: repeat(4, minmax(100px, 1fr));
+        gap: 45px;
+    }
+
+    .box {
+        height: 110px;
+        padding: 18px;
+    }
+
+    .rifa-number, .rifa-price {
+        font-size: 16px;
+    }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1440px) {
+    .container {
+        grid-template-columns: repeat(4, minmax(125px, 1fr));
+        gap: 16px;
+    }
+
+    .box {
+        height: 120px;
+        padding: 20px;
+    }
+
+    .rifa-number, .rifa-price {
+        font-size: 18px;
+    }
+}

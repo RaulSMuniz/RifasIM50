@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rifas</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <div class="header">
+        <div id="border-logo">
+            <img src="../images/logo.jpg" alt="Logo Gestão IM50" id="logoIM50">
+        </div>
+        <h1 class="rifas-disponiveis">Rifas Disponíveis</h1>
+        <!--  <span>A partir de 3 rifas, o preço da rifa passa a ser 5 reais.</span> -->
+        <div id="border-carrinho">
+            <div id="counter-carrinho">
+                <div id="counter">0</div>
+                <img src="../images/logocarrinho.png" alt="Carrinho de compras" class="carrinho">
+            </div>
+        </div>
+        
+    </div>
+    <div id="lista-carrinho" class="lista">
+            <div class="conteudo">
+                <div class="header-conteudo">
+                    <h2>Rifas Selecionadas</h2>
+                    <span class="fechar">&times;</span>
+                </div>
+                
+                <ul id="rifas-selecionadas"> 
+                    <span class="vazio">O carrinho está vazio.</span>
+                </ul>
+                <button id="comprar">Comprar</button>
+                <button id="limpar-carrinho">Limpar Carrinho</button>
+        </div>
+    </div>
+    <div id="lista-overlay" class="lista-overlay"></div>
+
+    
+    <div class="busca">
+        <input type="number" name="buscar-rifa" id="buscar-rifa" placeholder="Buscar Rifa">
+    </div>
+
+    <div class="container" id="grid"></div>
+
+    <div class="pagination">
+        <input type="button" value="◁ Anterior" class="btn-pagination">
+        <span class="pages-indicator">1  /  x</span>
+        <input type="button" value="Próximo ▷" class="btn-pagination">
+    </div>
+
+    
+
+    <script src="js/index.js"></script>
+</body>
+
+</html>
