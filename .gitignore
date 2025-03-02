@@ -1,3 +1,5 @@
 
 # Não subir o .env
 .env
+certs
+node_modules

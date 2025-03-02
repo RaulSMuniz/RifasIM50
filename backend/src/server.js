@@ -53,6 +53,39 @@ app.get("/rifas", async (req, res) => {
     }
 });
 
+// Gerar pagamento de Rifa
+/* app.post("/pagamento", async (req, res) => {
+    try {
+        const { valor, nome } = req.body;
+
+        const params = {};
+        const body = {
+            tempo: {
+                expira: 3600,
+            },
+            devedor: {
+                nome: nome || "N/A",
+            },
+            valor: {
+                original: valor.toFixed(2),
+            },
+            chave: process.env.GN_CHAVE_PIX,
+            solicitacaoPagador: "Pagamento da rifa.",
+        };
+
+        const pixResponse = await gerencianet.pixCreateImmediateCharge(params, body);
+        const qrCode = await gerencianet.pixGenerateQRCODE({ id: pixResponse.loc.id })
+
+        res.json({
+            qrCode: qrCode.imagemQrcode,
+            copiaCola: qrCode.qrcode,
+        });
+
+    } catch (err) {
+        console.log(err);
+    };
+}); */
+
 app.listen(port, () => {
     console.log(`Rodando na porta: ${port}`);
 });

@@ -1,0 +1,69 @@
+body, * {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: rgb(221, 221, 221);
+}
+
+.todas-infos {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%)
+}
+
+.header {
+    display: flex;
+    padding: 8px;
+    width: fit-content;
+    margin: auto;
+}
+
+.info-pagamento {
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    width: fit-content;
+    border: 1px solid rgba(255, 255, 255, 0.521);
+    border-radius: 8px;
+    padding: 4px;
+    background-color: rgba(255, 255, 255, 0.521);
+}
+.info-rifas {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+}
+.rifas-escolhidas {
+    border-bottom: 1px solid black;
+}
+
+.qrCode {
+    padding: 8px;
+    margin-left: 10px;
+    border-left: 1px solid black;
+}
+
+.info-preco {
+    border-bottom: 1px solid black;
+}
+
+.copia-cola {
+    color: rgba(0, 0, 0, 0.801);
+    margin-top: 4px;
+    padding: 8px;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 8px;
+    background-color: rgb(102, 204, 0);
+    border-color: rgb(102, 204, 0);
+    transition: 0.5s;
+    cursor: pointer;
+}
+.copia-cola:hover {
+    background-color: rgb(128, 255, 0);
+    border-color: rgb(128, 255, 0);
+    transition: 0.5s;
+}

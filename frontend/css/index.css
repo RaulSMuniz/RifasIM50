@@ -76,7 +76,6 @@ body {
 }
 
 .busca {
-    margin-top: 20px;
     display: flex;
     justify-content: space-around;
 }
@@ -191,6 +190,7 @@ body {
 }
 .lista.open {
     transform: translateX(0);
+    transition: transform 0.5s ease;
 }
 
 .lista-overlay{
@@ -224,6 +224,7 @@ body {
     font-weight: 1000;
     color: #474747;
     margin-left: 35px;
+    transition: 0.5s;
 }
 .fechar:hover {
     color: #000;

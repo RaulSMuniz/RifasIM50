@@ -13,6 +13,7 @@ const botaoCarrinho = document.querySelector('.carrinho');
 const fecharCarrinho = document.querySelector('.fechar');
 const listaRifasSelecionadas = document.querySelector('#rifas-selecionadas');
 const limparCarrinho = document.querySelector('#limpar-carrinho');
+const comprar = document.getElementById("comprar");
 
 // #ffffffcb
 
@@ -234,11 +235,10 @@ function updatePageIndicator(totalRifas) {
 
 // Função para adicionar as rifas selecionadas ao carrinho
 async function addAoCarrinho() {
-
-
-
     let precoTotal = 0;
     listaRifasSelecionadas.innerHTML = "";
+    let rifasCompradas = []
+
     selectedRifas.forEach(numero => {
         let rifa = allRifas.find(r => r.numero == numero);
         if (rifa) {
@@ -270,6 +270,7 @@ async function addAoCarrinho() {
 
             const preco = counterCarrinho >= 3 ? 5 : rifa.precoOriginal;
             precoTotal += preco;
+            rifasCompradas.push(numero)
         };
     });
 
@@ -281,5 +282,25 @@ async function addAoCarrinho() {
         valorTotal.innerHTML = "O carrinho está vazio.";
     }
     listaRifasSelecionadas.appendChild(valorTotal);
+
+    return [precoTotal.toFixed(2), rifasCompradas]
 };
+
+comprar.addEventListener("click", () => {
+    addAoCarrinho().then(([precoTotal, rifasCompradas]) => {
+        if (precoTotal < 1 || rifasCompradas.length == 0) {
+            console.log("Não tem preço ou não há rifas selecionadas.");
+            return;
+        }
+        console.log("Preço total: ", precoTotal);
+        console.log("Rifas compradas:");
+        rifasCompradas.forEach(rifa => console.log("Rifa n°", rifa));
+
+        sessionStorage.setItem("precoTotal", precoTotal);
+        sessionStorage.setItem("rifasCompradas", JSON.stringify(rifasCompradas));
+
+        window.location.href = "pagamento.html";
+    });
+});
+
 getRifas();
