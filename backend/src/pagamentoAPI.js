@@ -20,10 +20,11 @@ const agent = new https.Agent({
 const auth = Buffer.from(`${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`).toString("base64");
 
 app.set('view engine', 'ejs');
-app.set('views', '../../backend/src/views')
+const viewsPath = path.join(__dirname, 'views');
+app.set('views', viewsPath);
 
-app.get('/', (req, res) => {
-    axios({
+app.get('/', async (req, res) => {
+    const authResponse = await axios({
         method: 'POST',
         url: `${process.env.GN_ENDPOINT}/oauth/token`,
         headers: {
@@ -33,34 +34,36 @@ app.get('/', (req, res) => {
         httpsAgent: agent,
         data: {
             grant_type: "client_credentials",
-
         }
-    }).then((response) => {
-        const accessToken = response.data?.access_token;
+    })
 
-        const reqGN = axios.create({
-            baseURL: process.env.GN_ENDPOINT,
-            httpsAgent: agent,
-            headers: {
-                Authorization: `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            }
-        })
+    const accessToken = authResponse.data?.access_token;
 
-        const dataCob = {
-            calendario: {
-                expiracao: 3600
-            },
-            valor: {
-                original: '10.50'
-            },
-            chave: '126bec4a-2eb6-4b79-a045-78db68412899',
-            solicitacaoPagador: 'Cobrança dos serviços prestados.'
-        };
-
-
-        reqGN.post('v2/cob', dataCob).then(response => res.send(response.data));
+    const reqGN = axios.create({
+        baseURL: process.env.GN_ENDPOINT,
+        httpsAgent: agent,
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+        }
     });
+
+    const dataCob = {
+        calendario: {
+            expiracao: 3600
+        },
+        valor: {
+            original: '10.50'
+        },
+        chave: '126bec4a-2eb6-4b79-a045-78db68412899',
+        solicitacaoPagador: 'Cobrança dos serviços prestados.'
+    };
+
+    console.log(authResponse.data.scope)
+    const cobResponse = await reqGN.post('/v2/cob', dataCob);
+
+    const qrcodeResponse = await reqGN.get(`v2/loc/${cobResponse.data.loc.id}/qrcode`);
+    res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode });
 });
 
 app.listen(8000, () => {
