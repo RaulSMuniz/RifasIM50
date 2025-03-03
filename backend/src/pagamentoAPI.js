@@ -1,6 +1,9 @@
 require("dotenv").config();
 
 const fs = require("fs");
+const express = require('express');
+const app = express();
+
 const path = require("path");
 const axios = require('axios');
 const certPath = fs.readFileSync(
@@ -16,41 +19,52 @@ const agent = new https.Agent({
 // Converter credenciais para Base64
 const auth = Buffer.from(`${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`).toString("base64");
 
-axios({
-    method: 'POST',
-    url: `${process.env.GN_ENDPOINT}/oauth/token`,
-    headers: {
-        Authorization: `Basic ${auth}`,
-        'Content-Type': 'application/json'
-    },
-    httpsAgent: agent,
-    data: {
-        grant_type: "client_credentials",
+app.set('view engine', 'ejs');
+app.set('views', '../../backend/src/views')
 
-    }
-}).then((response) => {
-    const accessToken = response.data?.access_token;
-
-    const reqGN = axios.create({
-        baseURL: process.env.GN_ENDPOINT,
-        httpsAgent: agent,
+app.get('/', (req, res) => {
+    axios({
+        method: 'POST',
+        url: `${process.env.GN_ENDPOINT}/oauth/token`,
         headers: {
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Basic ${auth}`,
             'Content-Type': 'application/json'
+        },
+        httpsAgent: agent,
+        data: {
+            grant_type: "client_credentials",
+
         }
-    })
+    }).then((response) => {
+        const accessToken = response.data?.access_token;
 
-    const dataCob = {
-        calendario: {
-            expiracao: 3600
-        },
-        valor: {
-            original: '10.50'
-        },
-        chave: '126bec4a-2eb6-4b79-a045-78db68412899',
-        solicitacaoPagador: 'Cobrança dos serviços prestados.'
-    };
+        const reqGN = axios.create({
+            baseURL: process.env.GN_ENDPOINT,
+            httpsAgent: agent,
+            headers: {
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        })
+
+        const dataCob = {
+            calendario: {
+                expiracao: 3600
+            },
+            valor: {
+                original: '10.50'
+            },
+            chave: '126bec4a-2eb6-4b79-a045-78db68412899',
+            solicitacaoPagador: 'Cobrança dos serviços prestados.'
+        };
 
 
-    reqGN.post('v2/cob', dataCob).then(response => console.log(response.data));
+        reqGN.post('v2/cob', dataCob).then(response => res.send(response.data));
+    });
 });
+
+app.listen(8000, () => {
+    console.log("Rodando na porta 8000.");
+});
+
+
