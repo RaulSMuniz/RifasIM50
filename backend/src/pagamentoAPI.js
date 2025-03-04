@@ -1,10 +1,13 @@
 require("dotenv").config();
 
 const path = require('path');
+const bodyParser = require('body-parser');
 const express = require('express');
 const app = express();
 
 const GNRequest = require('./apis/gerencianet')
+
+app.use(bodyParser.json());
 
 app.set('view engine', 'ejs');
 const viewsPath = path.join(__dirname, 'views');
@@ -42,6 +45,11 @@ app.get('/cobrancas', async (req, res) => {
 
     const cobResponse = await reqGN.get('/v2/cob?inicio=2021-02-15T16:01:35Z&fim=2025-03-05T03:11:00Z')
     res.send(cobResponse.data);
+});
+
+app.post('webhook(/pix)?', (req, res) => {
+    console.log(req.body);
+    res.send('200');
 });
 
 app.listen(8000, () => {
