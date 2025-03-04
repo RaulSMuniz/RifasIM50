@@ -1,52 +1,24 @@
 require("dotenv").config();
 
-const fs = require("fs");
+const path = require('path');
 const express = require('express');
 const app = express();
 
-const path = require("path");
-const axios = require('axios');
-const certPath = fs.readFileSync(
-    path.resolve(__dirname, `../../certs/${process.env.GN_CERT}`)
-);
-const https = require("https");
-
-// Agent para identificar o certificado
-const agent = new https.Agent({
-    pfx: certPath,
-    passphrase: ''
-});
-// Converter credenciais para Base64
-const auth = Buffer.from(`${process.env.GN_CLIENT_ID}:${process.env.GN_CLIENT_SECRET}`).toString("base64");
+const GNRequest = require('./apis/gerencianet')
 
 app.set('view engine', 'ejs');
 const viewsPath = path.join(__dirname, 'views');
 app.set('views', viewsPath);
 
+const reqGNAlready = GNRequest(
+    {
+        clientID: process.env.GN_CLIENT_ID,
+        clientSecret: process.env.GN_CLIENT_SECRET
+    }
+);
+
 app.get('/', async (req, res) => {
-    const authResponse = await axios({
-        method: 'POST',
-        url: `${process.env.GN_ENDPOINT}/oauth/token`,
-        headers: {
-            Authorization: `Basic ${auth}`,
-            'Content-Type': 'application/json'
-        },
-        httpsAgent: agent,
-        data: {
-            grant_type: "client_credentials",
-        }
-    })
-
-    const accessToken = authResponse.data?.access_token;
-
-    const reqGN = axios.create({
-        baseURL: process.env.GN_ENDPOINT,
-        httpsAgent: agent,
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-        }
-    });
+    const reqGN = await reqGNAlready;
 
     const dataCob = {
         calendario: {
@@ -59,11 +31,17 @@ app.get('/', async (req, res) => {
         solicitacaoPagador: 'Cobrança dos serviços prestados.'
     };
 
-    console.log(authResponse.data.scope)
     const cobResponse = await reqGN.post('/v2/cob', dataCob);
 
     const qrcodeResponse = await reqGN.get(`v2/loc/${cobResponse.data.loc.id}/qrcode`);
     res.render('qrcode', { qrcodeImage: qrcodeResponse.data.imagemQrcode });
+});
+
+app.get('/cobrancas', async (req, res) => {
+    const reqGN = await reqGNAlready;
+
+    const cobResponse = await reqGN.get('/v2/cob?inicio=2021-02-15T16:01:35Z&fim=2025-03-05T03:11:00Z')
+    res.send(cobResponse.data);
 });
 
 app.listen(8000, () => {
