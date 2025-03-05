@@ -30,7 +30,7 @@ app.get('/', async (req, res) => {
         valor: {
             original: '10.50'
         },
-        chave: '126bec4a-2eb6-4b79-a045-78db68412899',
+        chave: `${process.env.GN_CHAVE_PIX}`,
         solicitacaoPagador: 'Cobrança dos serviços prestados.'
     };
 
